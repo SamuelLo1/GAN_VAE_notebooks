@@ -40,7 +40,14 @@ class Discriminator(nn.Module):
         ##############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        self.model = None
+        self.model = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(784, 256, bias=True),
+            nn.LeakyReLU(negative_slope=0.01),
+            nn.Linear(256, 256, bias=True),
+            nn.LeakyReLU(negative_slope=0.01),
+            nn.Linear(256, 1, bias=True),
+        )
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ##############################################################################
@@ -201,7 +208,7 @@ class DCDiscriminator(nn.Module):
             nn.Linear(in_features=256, out_features=1)
         )
 
-        
+
         
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
