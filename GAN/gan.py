@@ -193,7 +193,16 @@ class DCDiscriminator(nn.Module):
         ##############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        self.model = None
+        self.model = nn.Sequential(
+            nn.Linear(in_features=784, out_features=256),
+            nn.LeakyReLU(negative_slope=0.01),
+            nn.Linear(in_features=256, out_features=256),
+            nn.LeakyReLU(negative_slope=0.01),
+            nn.Linear(in_features=256, out_features=1)
+        )
+
+        
+        
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ##############################################################################
