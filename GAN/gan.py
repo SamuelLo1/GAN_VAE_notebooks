@@ -70,7 +70,16 @@ class Generator(nn.Module):
         ##############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        self.model = None
+        self.model = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(noise_dim, 1024, bias=True),
+            nn.ReLU(),
+            nn.Linear(1024, 1024, bias=True),
+            nn.ReLU(),
+            nn.Linear(1024, 784, bias=True),
+            nn.Tanh(),
+        )
+
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ##############################################################################
