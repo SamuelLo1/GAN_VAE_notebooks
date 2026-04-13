@@ -203,7 +203,7 @@ def ls_generator_loss(scores_fake: Tensor) -> Tensor:
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
     true_labels_fake = torch.ones_like(scores_fake, dtype=torch.float32).to(device)
-    loss = torch.mean((scores_fake - true_labels_fake) ** 2)
+    loss = 0.5 * torch.mean((scores_fake - true_labels_fake) ** 2)
 
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
