@@ -179,7 +179,11 @@ def ls_discriminator_loss(scores_real: Tensor, scores_fake: Tensor) -> Tensor:
     loss = None
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    true_labels_real = torch.ones_like(scores_real, dtype=torch.float32).to(device)
+    true_labels_fake = torch.zeros_like(scores_fake, dtype=torch.float32).to(device)
+    loss_real = torch.mean((scores_real - true_labels_real) ** 2)
+    loss_fake = torch.mean((scores_fake - true_labels_fake) ** 2)
+    loss = 0.5 * (loss_real + loss_fake)
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
@@ -198,7 +202,9 @@ def ls_generator_loss(scores_fake: Tensor) -> Tensor:
     loss = None
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    true_labels_fake = torch.ones_like(scores_fake, dtype=torch.float32).to(device)
+    loss = torch.mean((scores_fake - true_labels_fake) ** 2)
+
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
