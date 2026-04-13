@@ -123,7 +123,12 @@ def discriminator_loss(logits_real: Tensor, logits_fake: Tensor) -> Tensor:
     loss = None
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    true_labels = torch.ones_like(logits_real, dtype=torch.float32).to(device)
+    false_labels = torch.zeros_like(logits_fake, dtype=torch.float32).to(device)
+    loss_real = bce_loss(logits_real, true_labels)
+    loss_fake = bce_loss(logits_fake, false_labels)
+    loss = loss_real + loss_fake
+
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
@@ -145,7 +150,8 @@ def generator_loss(logits_fake: Tensor) -> Tensor:
     loss = None
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    true_labels = torch.ones_like(logits_fake, dtype=torch.float32).to(device)
+    loss = bce_loss(logits_fake, true_labels)
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
