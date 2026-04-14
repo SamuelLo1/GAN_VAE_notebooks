@@ -222,11 +222,16 @@ class DCDiscriminator(nn.Module):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         self.model = nn.Sequential(
-            nn.Linear(in_features=784, out_features=256),
+            nn.Conv2d(1, 32, kernel_size=5, stride=1, bias=True),
             nn.LeakyReLU(negative_slope=0.01),
-            nn.Linear(in_features=256, out_features=256),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(32, 64, kernel_size=5, stride=1, bias=True),
             nn.LeakyReLU(negative_slope=0.01),
-            nn.Linear(in_features=256, out_features=1)
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Flatten(),
+            nn.Linear(1024, 1024, bias=True),
+            nn.LeakyReLU(negative_slope=0.01),
+            nn.Linear(1024, 1, bias=True)
         )
 
 
@@ -238,8 +243,11 @@ class DCDiscriminator(nn.Module):
         ##############################################################################
 
     def forward(self, x):
-        return self.model(x)
-
+        print(f"Input shape: {x.shape}")
+        for i, layer in enumerate(self.model):
+            x = layer(x)
+            print(f"Layer {i} ({layer.__class__.__name__}): {x.shape}")
+        return x
 
 class DCGenerator(nn.Module):
     def __init__(self, noise_dim: int = NOISE_DIM):
