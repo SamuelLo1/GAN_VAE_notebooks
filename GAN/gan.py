@@ -243,10 +243,7 @@ class DCDiscriminator(nn.Module):
         ##############################################################################
 
     def forward(self, x):
-        print(f"Input shape: {x.shape}")
-        for i, layer in enumerate(self.model):
-            x = layer(x)
-            print(f"Layer {i} ({layer.__class__.__name__}): {x.shape}")
+        x = self.model(x)
         return x
 
 class DCGenerator(nn.Module):
