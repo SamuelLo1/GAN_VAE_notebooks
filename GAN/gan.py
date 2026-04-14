@@ -256,12 +256,39 @@ class DCGenerator(nn.Module):
 
         ##############################################################################
         # TODO: Implement architecture                                               #
-        #                                                                            #
+        # Fully connected with output size 1024
+        # ReLU
+        # BatchNorm
+        # Fully connected with output size 7 x 7 x 128
+        # ReLU
+        # BatchNorm
+        # Use nn.Unflatten(1, (128, 7, 7)) to reshape into Image Tensor of shape 128, 7, 7
+        # ConvTranspose2d: 64 filters of 4x4, stride 2, 'same' padding (use padding=1)
+        # ReLU
+        # BatchNorm
+        # ConvTranspose2d: 1 filter of 4x4, stride 2, 'same' padding (use padding=1)
+        # TanH
+        # Should have a 28x28x1 image, reshape back into 784 vector (using nn.Flatten())                                                                          
         # HINT: nn.Sequential might be helpful.                                      #
         ##############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        self.model = None
+        self.model = nn.Sequential(
+            nn.Linear(noise_dim, 1024, bias=True),
+            nn.ReLU(),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024, 7 * 7 * 128, bias=True),
+            nn.ReLU(),
+            nn.BatchNorm1d(7 * 7 * 128),
+            nn.Unflatten(1, (128, 7, 7)),
+            nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1, bias=True),
+            nn.ReLU(),
+            nn.BatchNorm2d(64),
+            nn.ConvTranspose2d(64, 1, kernel_size=4, stride=2, padding=1, bias=True),
+            nn.Tanh(),
+            nn.Flatten()
+        )
+
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ##############################################################################
