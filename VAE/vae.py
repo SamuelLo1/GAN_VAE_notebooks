@@ -142,7 +142,15 @@ class CVAE(nn.Module):
         ############################################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        x_flat = x.view(x.size(0), -1)
+        x_with_labels = torch.cat([x_flat, labels], dim=1)
+        h = self.encoder(x_with_labels)
+        mu = self.mu_layer(h)
+        logvar = self.logvar_layer(h)
+        z = reparametrize(mu, logvar)
+        z_with_labels = torch.cat([z, labels], dim=1)
+        x_hat = self.decoder(z_with_labels)
+
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################################
