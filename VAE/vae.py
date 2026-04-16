@@ -81,8 +81,12 @@ class VAE(nn.Module):
         # (3) Pass z through self.decoder to reconstruct x                                         #
         ############################################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-        pass
+    
+        h = self.encoder(x)
+        mu = self.mu_layer(h)
+        logvar = self.logvar_layer(h)
+        z = reparametrize(mu, logvar)
+        x_hat = self.decoder(z)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################################
