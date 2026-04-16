@@ -172,7 +172,8 @@ def reparametrize(mu: Tensor, logvar: Tensor) -> Tensor:
     z = None
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    epsilon = torch.randn_like(mu)
+    z = mu + torch.exp(0.5 * logvar) * epsilon
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return z
@@ -203,7 +204,10 @@ def loss_function(x_hat: Tensor, x: Tensor, mu: Tensor, logvar: Tensor) -> Tenso
     loss = None
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    batch_size = mu.shape[0]
+    reconstruction_term = F.binary_cross_entropy(x_hat, x, reduction='sum')
+    kl_divergence = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    loss = (reconstruction_term + kl_divergence) / batch_size
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
